@@ -1,0 +1,32 @@
+# YooBook Project
+
+Simple web app untuk buku dengan login, register, contact form, dan filter buku.
+
+## Tech Stack
+- Frontend: HTML, CSS, JS, Bootstrap
+- Backend: Node.js, Express, bcrypt
+- Database: PostgreSQL (pg)
+
+## Features
+- Register & Login user (password hashed)
+- Submit contact form
+- Search & filter buku
+- Navbar update berdasarkan status login
+
+## Database
+### Users
+id, name, email, password, created_at
+
+### Contacts
+id, user_id (nullable), first_name, last_name, email, phone, subject, message, created_at
+
+## CRUD
+- Create: register, contact
+- Read: login, filter buku
+- Update & Delete: belum ada
+
+## Run
+1. Install: `npm install express cors pg bcrypt`
+2. Buat DB & tabel PostgreSQL
+3. Jalankan: `node server.js`
+4. Buka HTML di browser
