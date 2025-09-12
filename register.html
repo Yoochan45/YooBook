@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - YooBook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-book display-4 text-primary mb-2"></i>
+                            <h1 class="h3 fw-bold">YooBook</h1>
+                            <p class="text-muted">Buat akun baru</p>
+                        </div>
+
+                        <form id="registerForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label"><i class="bi bi-person"></i> Nama Lengkap</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label"><i class="bi bi-envelope"></i> Email</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label"><i class="bi bi-lock"></i> Password</label>
+                                <div class="position-relative">
+                                    <input type="password" id="password" name="password" class="form-control" required>
+                                    <i class="bi bi-eye password-toggle" onclick="togglePassword('password')"></i>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label"><i class="bi bi-lock-fill"></i> Konfirmasi Password</label>
+                                <div class="position-relative">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                                    <i class="bi bi-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 mb-3"><i class="bi bi-person-plus"></i> Daftar</button>
+                        </form>
+
+                        <div class="text-center">
+                            <p class="text-muted mb-2">
+                                Sudah punya akun? 
+                                <a href="login.html" class="text-dark text-decoration-none">Masuk di sini</a>
+                            </p>
+                            <a href="index.html" class="text-muted text-decoration-none">
+                                <i class="bi bi-arrow-left"></i> Kembali ke Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = field.nextElementSibling;
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.className = 'bi bi-eye-slash password-toggle';
+            } else {
+                field.type = 'password';
+                icon.className = 'bi bi-eye password-toggle';
+            }
+        }
+    </script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>
