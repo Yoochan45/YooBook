@@ -1,9 +1,11 @@
 // auth.js - Authentication Handler
+// Semua fungsi di sini berhubungan dengan login, register, contact form, logout, dan update UI
 
-// Fungsi untuk menangani login
+// ===================== LOGIN =====================
 async function handleLogin(event) {
-    event.preventDefault(); // Mencegah form reload halaman
-    
+    event.preventDefault(); // Mencegah form reload halaman (default behavior HTML)
+
+    // Ambil data dari form login
     const formData = new FormData(event.target);
     const loginData = {
         email: formData.get('email'),
@@ -11,27 +13,26 @@ async function handleLogin(event) {
     };
 
     try {
+        // Kirim data login ke server (POST /login)
         const response = await fetch('/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
         });
 
         const result = await response.json();
 
         if (result.success) {
-            // Simpan data user ke localStorage
+            // Jika login berhasil, simpan data user di localStorage (mirip session)
             localStorage.setItem('user', JSON.stringify(result.user));
             
-            // Tampilkan pesan sukses
+            // Beri notifikasi sukses
             alert('Login berhasil! Selamat datang, ' + result.user.name);
             
             // Redirect ke halaman utama
             window.location.href = '/index.html';
         } else {
-            // Tampilkan pesan error
+            // Jika gagal, tampilkan pesan error
             alert('Login gagal: ' + result.error);
         }
     } catch (error) {
@@ -40,10 +41,10 @@ async function handleLogin(event) {
     }
 }
 
-// Fungsi untuk menangani register
+// ===================== REGISTER =====================
 async function handleRegister(event) {
-    event.preventDefault(); // Mencegah form reload halaman
-    
+    event.preventDefault(); // Mencegah reload
+
     const formData = new FormData(event.target);
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
@@ -54,6 +55,7 @@ async function handleRegister(event) {
         return;
     }
 
+    // Ambil data register
     const registerData = {
         name: formData.get('name'),
         email: formData.get('email'),
@@ -61,24 +63,19 @@ async function handleRegister(event) {
     };
 
     try {
+        // Kirim data register ke server (POST /register)
         const response = await fetch('/register', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(registerData)
         });
 
         const result = await response.json();
 
         if (result.success) {
-            // Tampilkan pesan sukses
             alert('Registrasi berhasil! Silakan login dengan akun Anda.');
-            
-            // Redirect ke halaman login
             window.location.href = '/login.html';
         } else {
-            // Tampilkan pesan error
             alert('Registrasi gagal: ' + result.error);
         }
     } catch (error) {
@@ -87,15 +84,10 @@ async function handleRegister(event) {
     }
 }
 
-// Fungsi untuk menangani contact form
+// ===================== CONTACT FORM =====================
 async function handleContact(event) {
-    event.preventDefault(); // Mencegah form reload halaman
-    async function handleContact(event) {
-    console.log('Contact form submitted!'); // Debug line
-    event.preventDefault(); // Ini harus jalan
-    // ... rest of code
-}
-    
+    event.preventDefault(); // Mencegah reload
+
     const formData = new FormData(event.target);
     const contactData = {
         firstName: formData.get('firstName'),
@@ -114,30 +106,28 @@ async function handleContact(event) {
     }
 
     try {
+        // Kirim contact form ke server (POST /contacts)
         const response = await fetch('/contacts', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(contactData)
         });
 
         const result = await response.json();
 
         if (result.success) {
-            // Sembunyikan form dan tampilkan pesan sukses
+            // Jika berhasil, sembunyikan form & tampilkan pesan sukses
             document.getElementById('contactForm').style.display = 'none';
             document.getElementById('successMessage').style.display = 'block';
             document.getElementById('errorMessage').style.display = 'none';
-            
-            // Reset form setelah 3 detik dan tampilkan kembali
+
+            // Reset form setelah 3 detik
             setTimeout(() => {
                 document.getElementById('contactForm').reset();
                 document.getElementById('contactForm').style.display = 'block';
                 document.getElementById('successMessage').style.display = 'none';
             }, 3000);
         } else {
-            // Tampilkan pesan error
             document.getElementById('errorMessage').style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
             console.error('Contact error:', result.error);
@@ -149,14 +139,14 @@ async function handleContact(event) {
     }
 }
 
-// Fungsi untuk logout
+// ===================== LOGOUT =====================
 function handleLogout() {
-    localStorage.removeItem('user');
+    localStorage.removeItem('user'); // Hapus data user
     alert('Anda telah logout');
     window.location.href = '/index.html';
 }
 
-// Fungsi untuk update UI berdasarkan status login
+// ===================== UPDATE UI LOGIN =====================
 function updateAuthUI() {
     const user = JSON.parse(localStorage.getItem('user') || 'null');
     const authSection = document.getElementById('authSection');
@@ -166,42 +156,36 @@ function updateAuthUI() {
     const userEmail = document.getElementById('userEmail');
 
     if (user && authSection && loginBtn && profileSection) {
-        // User sudah login
+        // User sudah login → tampilkan profile, sembunyikan tombol login
         loginBtn.style.display = 'none';
         profileSection.style.display = 'block';
         if (userName) userName.textContent = user.name;
         if (userEmail) userEmail.textContent = user.email;
     } else if (authSection && loginBtn && profileSection) {
-        // User belum login
+        // User belum login → tampilkan login, sembunyikan profile
         loginBtn.style.display = 'block';
         profileSection.style.display = 'none';
     }
 }
 
-// Event listeners yang akan dijalankan ketika DOM sudah siap
+// ===================== EVENT LISTENERS =====================
 document.addEventListener('DOMContentLoaded', function() {
-    // Update UI berdasarkan status login
+    // Update UI login/register ketika halaman dimuat
     updateAuthUI();
 
-    // Event listener untuk form login
+    // Login form
     const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
 
-    // Event listener untuk form register
+    // Register form
     const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
-    }
+    if (registerForm) registerForm.addEventListener('submit', handleRegister);
 
-    // Event listener untuk form contact
+    // Contact form
     const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', handleContact);
-    }
+    if (contactForm) contactForm.addEventListener('submit', handleContact);
 
-    // Event listener untuk logout
+    // Logout button
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -210,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Event listener untuk reset form contact
+    // Reset contact form
     const contactResetBtn = document.querySelector('button[type="reset"]');
     if (contactResetBtn) {
         contactResetBtn.addEventListener('click', function() {
@@ -220,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Fungsi helper untuk toggle password visibility (sudah ada di HTML)
+// ===================== HELPER =====================
+// Toggle visibility password di form login/register
 function togglePassword(fieldId) {
     const field = document.getElementById(fieldId);
     const icon = field.nextElementSibling;

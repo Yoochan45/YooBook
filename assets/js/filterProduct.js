@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ambil dropdown filter kategori dari HTML
     const categorySelect = document.getElementById('categoryFilter');
 
+
+
+
     // Fungsi untuk memfilter buku berdasarkan search dan kategori
     function filterBooks() {
         // Ambil teks yang diketik di search, ubah menjadi huruf kecil supaya case-insensitive
@@ -37,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Jika kedua kondisi terpenuhi, tampilkan buku. Kalau tidak, sembunyikan.
             if (matchesSearch && matchesCategory) {
-                book.style.display = 'block';
+                book.style.display = '';
             } else {
                 book.style.display = 'none';
             }
